@@ -117,31 +117,30 @@ fetch(API_URL)
 
     const weeklyMileage = {};
 
-    data.forEach(run => {
+data.forEach(run => {
 
-        const date =
-            new Date(run.Date || run.date);
+    const date = new Date(
+        run.Date || run.date
+    );
 
-        const week =
-            Math.floor(
-                date.getTime() /
-                (1000*60*60*24*7)
-            );
+    const weekLabel =
+        `${date.getFullYear()}-W${Math.ceil(date.getDate()/7)}`;
 
-        const distance =
-            Number(run.Distance || run.distance || 0);
+    const distance =
+        Number(run.Distance || run.distance || 0);
 
-        weeklyMileage[week] =
-            (weeklyMileage[week] || 0)
-            + distance;
-    });
+    weeklyMileage[weekLabel] =
+        (weeklyMileage[weekLabel] || 0)
+        + distance;
+
+});
 
     const weekLabels =
-        Object.keys(weeklyMileage);
+    Object.keys(weeklyMileage);
 
     const weekMiles =
-        Object.values(weeklyMileage);
-
+    Object.values(weeklyMileage);
+    
     new Chart(
         document.getElementById("weeklyChart"),
         {
