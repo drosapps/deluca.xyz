@@ -88,7 +88,6 @@ Track mileage, shoes, weight, and PRs
 
 const scriptURL =
 "https://script.google.com/macros/s/AKfycby_lVG_c0re8dsFtHyY3gPE1Sw9wxQ4905V7Sc3q-sGE8iDs5KJfm3qUZuvFZiEeS3B/exec";
-document
 
 
 const timeInput = document.getElementById("time");
@@ -98,14 +97,14 @@ timeInput.addEventListener("input", function() {
     let value = this.value.replace(/\D/g, "");
 
     if (value.length > 4) {
-        value = value.substring(0, 4);
+        value = value.slice(0, 4);
     }
 
-    if (value.length === 4) {
+    if (value.length >= 3) {
         value =
-            value.substring(0, 2)
-            + ":" +
-            value.substring(2);
+            value.slice(0, value.length - 2) +
+            ":" +
+            value.slice(-2);
     }
 
     this.value = value;
