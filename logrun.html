@@ -128,21 +128,19 @@ button:hover {
 Track mileage, shoes, weight, and PRs
 </p>
 
-<div class="stats">
-    <div class="stat-card">
-        <div class="stat-value">0</div>
-        <div class="stat-label">Runs</div>
-    </div>
+<div class="stat-card">
+    <div class="stat-value" id="runCount">0</div>
+    <div class="stat-label">Runs</div>
+</div>
 
-    <div class="stat-card">
-        <div class="stat-value">0.0</div>
-        <div class="stat-label">Miles</div>
-    </div>
+<div class="stat-card">
+    <div class="stat-value" id="mileCount">0.0</div>
+    <div class="stat-label">Miles</div>
+</div>
 
-    <div class="stat-card">
-        <div class="stat-value">--</div>
-        <div class="stat-label">Weight</div>
-    </div>
+<div class="stat-card">
+    <div class="stat-value" id="currentWeight">--</div>
+    <div class="stat-label">Weight</div>
 </div>
 
 <form id="runForm">
@@ -270,6 +268,34 @@ alert("Run Saved!");
 
 document.getElementById("date").value =
 new Date().toISOString().split("T")[0];
+
+fetch(scriptURL)
+.then(response => response.json())
+.then(data => {
+
+    document.getElementById("runCount").textContent =
+      data.length;
+
+    let totalMiles = 0;
+
+    data.forEach(run => {
+        totalMiles += Number(run.Distance || run.distance || 0);
+    });
+
+    document.getElementById("mileCount").textContent =
+      totalMiles.toFixed(1);
+
+    const lastRun = data[data.length - 1];
+
+    document.getElementById("currentWeight").textContent =
+      lastRun.Weight ||
+      lastRun.weight ||
+      "--";
+
+})
+.catch(error => {
+    console.error(error);
+});
 
 </script>
 
