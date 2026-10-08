@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Analytics</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    https://cdn.jsdelivr.net/npm/chart.jsscript>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="navbar">
+        <a href="logrun.html">Log Run</a>
+        <a href="history.html">History</a>
+        <a href="shoe.html">Shoes</a>
+        <a href="graph.html" class="active">Analytics</a>
+    </div>
+
+    <h1>📈 Analytics</h1>
+
+    <p class="subtitle">
+        Progress Tracking
+    </p>
+
+    <canvas id="distanceChart"></canvas>
+
+    <br><br>
+
+    <canvas id="paceChart"></canvas>
+
+    <br><br>
+
+    <canvas id="weeklyChart"></canvas>
+
+</div>
+
+<script>
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycby_lVG_c0re8dsFtHyY3gPE1Sw9wxQ4905V7Sc3q-sGE8iDs5KJfm3qUZuvFZiEeS3B/exec";
+
+fetch(API_URL)
+.then(response => response.json())
+.then(data => {
+
+    data.sort((a,b) =>
+        new Date(a.Date || a.date) -
+        new Date(b.Date || b.date)
+    );
+
+    const labels = [];
+    const distances = [];
+    const paces = [];
+
+    data.forEach(run => {
+
+        const date =
+            run.Date || run.date;
+
+        labels.push(date);
+
+        distances.push(
+            Number(run.Distance || run.distance || 0)
+        );
+
+        const pace =
+            run.Pace || run.pace || "0:00";
+
+        const parts = pace.split(":");
+
+        let paceMinutes = 0;
+
+        if(parts.length === 2){
+            paceMinutes =
+                Number(parts[0]) +
+                Number(parts[1]) / 60;
+        }
+
+        paces.push(paceMinutes);
+
+    });
+
+    new Chart(
+        document.getElementById("distanceChart"),
+        {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Distance (Miles)",
+                    data: distances,
+                    borderColor: "#fc5200",
+                    tension: 0.3
+                }]
+            }
+        }
+    );
+
+    new Chart(
+        document.getElementById("paceChart"),
+        {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Pace (min/mile)",
+                    data: paces,
+                    borderColor: "#4caf50",
+                    tension: 0.3
+                }]
+            }
+        }
+    );
+
+    const weeklyMileage = {};
+
+    data.forEach(run => {
+
+        const date =
+            new Date(run.Date || run.date);
+
+        const week =
+            Math.floor(
+                date.getTime() /
+                (1000*60*60*24*7)
+            );
+
+        const distance =
+            Number(run.Distance || run.distance || 0);
+
+        weeklyMileage[week] =
+            (weeklyMileage[week] || 0)
+            + distance;
+    });
+
+    const weekLabels =
+        Object.keys(weeklyMileage);
+
+    const weekMiles =
+        Object.values(weeklyMileage);
+
+    new Chart(
+        document.getElementById("weeklyChart"),
+        {
+            type: "bar",
+            data: {
+                labels: weekLabels,
+                datasets: [{
+                    label: "Miles Per Week",
+                    data: weekMiles,
+                    backgroundColor: "#fc5200"
+                }]
+            }
+        }
+    );
+
+});
+
+</script>
+
+</body>
+</html>
