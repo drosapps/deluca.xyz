@@ -15,11 +15,19 @@
 <label>Distance (miles)</label><br>
 <input type="number" step="0.01" id="distance"><br><br>
 
-<label>Time (minutes)</label><br>
-<input type="number" step="0.01" id="time"><br><br>
-
+<label>Time</label><br>
+<input
+  type="text"
+  id="time"
+  placeholder="MM:SS"
+><br><br>
+    
 <label>Shoe</label><br>
-<input type="text" id="shoe"><br><br>
+<select id="shoe">
+  <option value="Evo SL">Evo SL</option>
+  <option value="Glycerin 22">Glycerin 22</option>
+  <option value="Revolution 8">Revolution 8</option>
+</select><br><br>
 
 <label>Run Type</label><br>
 <select id="type">
@@ -58,36 +66,59 @@ parseFloat(
 document.getElementById("distance").value
 );
 
-const time =
-parseFloat(
-document.getElementById("time").value
-);
+const timeString =
+document.getElementById("time").value;
 
-const pace = (time / distance).toFixed(2);
+const parts = timeString.trim().split(":");
+
+if(parts.length !== 2){
+    alert("Please use MM:SS format");
+    return;
+}
+
+const minutes = Number(parts[0]);
+const seconds = Number(parts[1]);
+
+if(
+    isNaN(minutes) ||
+    isNaN(seconds) ||
+    seconds < 0 ||
+    seconds > 59
+){
+    alert("Invalid time format. Use MM:SS");
+    return;
+}
+
+const totalSeconds = minutes * 60 + seconds;
+
+const paceSeconds = totalSeconds / distance;
+
+const paceMinutes =
+Math.floor(paceSeconds / 60);
+
+const paceRemainder =
+Math.floor(paceSeconds % 60);
+
+const pace =
+`${paceMinutes}:${String(
+paceRemainder
+).padStart(2,"0")}`;
 
 const payload = {
- date:
- document.getElementById("date").value,
+  date: document.getElementById("date").value,
+  distance,
+  time: timeString,
+  pace,
 
- distance,
- time,
+  shoe: document.getElementById("shoe").value,
 
- pace,
+  type: document.getElementById("type").value,
 
- shoe:
- document.getElementById("shoe").value,
+  weight: document.getElementById("weight").value,
 
- type:
- document.getElementById("type").value,
+  effort: document.getElementById("effort").value,
 
- weight:
- document.getElementById("weight").value,
-
- effort:
- document.getElementById("effort").value,
-
- notes:
- document.getElementById("notes").value
+  notes: document.getElementById("notes").value
 };
 
 await fetch(scriptURL,{
@@ -98,6 +129,9 @@ await fetch(scriptURL,{
 alert("Run Saved!");
 
 });
+
+document.getElementById("date").value =
+new Date().toISOString().split("T")[0];
 
 </script>
 
