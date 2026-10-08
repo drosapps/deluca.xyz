@@ -104,17 +104,17 @@ timeInput.addEventListener("input", function() {
     if (value.length === 4) {
         value =
             value.substring(0, 2)
-            + ":"
-            + value.substring(2);
+            + ":" +
+            value.substring(2);
     }
 
     this.value = value;
 
 });
-    
+
+document
 .getElementById("runForm")
 .addEventListener("submit", async (e)=>{
-
 e.preventDefault();
 
 
