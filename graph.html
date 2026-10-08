@@ -3,6 +3,7 @@
 
 <head>
     <title>Analytics</title>
+
     <link rel="stylesheet" href="styles.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -33,7 +34,7 @@
 
     <br><br>
 
-    <canvas id="weeklyChart"></canvas>
+    <canvas id="mileageChart"></canvas>
 
 </div>
 
@@ -54,50 +55,60 @@ fetch(API_URL)
     const labels = [];
     const distances = [];
     const paces = [];
+    const cumulativeMiles = [];
 
-    data.forEach(run => {
+    let totalMiles = 0;
 
-        const date =
-            run.Date || run.date;
+    data.forEach((run, index) => {
 
-        labels.push(date);
+        const distance =
+            Number(run.Distance || run.distance || 0);
 
-        distances.push(
-            Number(run.Distance || run.distance || 0)
-        );
+        totalMiles += distance;
+
+        labels.push(`Run ${index + 1}`);
+
+        distances.push(distance);
+
+        cumulativeMiles.push(totalMiles);
 
         const pace =
             run.Pace || run.pace || "0:00";
 
-        const parts = pace.split(":");
+        const paceParts =
+            pace.split(":");
 
-        let paceMinutes = 0;
+        let paceValue = 0;
 
-        if(parts.length === 2){
-            paceMinutes =
-                Number(parts[0]) +
-                Number(parts[1]) / 60;
+        if(paceParts.length === 2){
+
+            paceValue =
+                Number(paceParts[0]) +
+                Number(paceParts[1]) / 60;
         }
 
-        paces.push(paceMinutes);
+        paces.push(paceValue);
 
     });
+
+    // Distance
 
     new Chart(
         document.getElementById("distanceChart"),
         {
-            type: "line",
+            type: "bar",
             data: {
                 labels: labels,
                 datasets: [{
                     label: "Distance (Miles)",
                     data: distances,
-                    borderColor: "#fc5200",
-                    tension: 0.3
+                    backgroundColor: "#fc5200"
                 }]
             }
         }
     );
+
+    // Pace
 
     new Chart(
         document.getElementById("paceChart"),
@@ -106,7 +117,7 @@ fetch(API_URL)
             data: {
                 labels: labels,
                 datasets: [{
-                    label: "Pace (min/mile)",
+                    label: "Pace (Minutes Per Mile)",
                     data: paces,
                     borderColor: "#4caf50",
                     tension: 0.3
@@ -115,49 +126,30 @@ fetch(API_URL)
         }
     );
 
-    const weeklyMileage = {};
+    // Total Mileage
 
-data.forEach(run => {
-
-    const date = new Date(
-        run.Date || run.date
-    );
-
-    const weekLabel =
-        `${date.getFullYear()}-W${Math.ceil(date.getDate()/7)}`;
-
-    const distance =
-        Number(run.Distance || run.distance || 0);
-
-    weeklyMileage[weekLabel] =
-        (weeklyMileage[weekLabel] || 0)
-        + distance;
-
-});
-
-    const weekLabels =
-    Object.keys(weeklyMileage);
-
-    const weekMiles =
-    Object.values(weeklyMileage);
-    
     new Chart(
-        document.getElementById("weeklyChart"),
+        document.getElementById("mileageChart"),
         {
-            type: "bar",
+            type: "line",
             data: {
-                labels: weekLabels,
+                labels: labels,
                 datasets: [{
-                    label: "Miles Per Week",
-                    data: weekMiles,
-                    backgroundColor: "#fc5200"
+                    label: "Cumulative Miles",
+                    data: cumulativeMiles,
+                    borderColor: "#2196f3",
+                    tension: 0.3
                 }]
             }
         }
     );
 
-});
+})
+.catch(error => {
 
+    console.error(error);
+
+});
 </script>
 
 </body>
