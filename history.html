@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Run History</title>
+
+<style>
+body{
+    background:#121212;
+    color:white;
+    font-family:Segoe UI,sans-serif;
+    padding:30px;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+}
+
+h1{
+    text-align:center;
+    color:#fc5200;
+    margin-bottom:30px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#fc5200;
+    padding:12px;
+}
+
+td{
+    background:#1e1e1e;
+    padding:12px;
+    border-bottom:1px solid #333;
+}
+
+tr:hover td{
+    background:#252525;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>📖 Run History</h1>
+
+<table id="historyTable">
+
+<thead>
+<tr>
+<th>Date</th>
+<th>Distance</th>
+<th>Time</th>
+<th>Pace</th>
+<th>Shoe</th>
+<th>Type</th>
+<th>Weight</th>
+</tr>
+</thead>
+
+<tbody>
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycby_lVG_c0re8dsFtHyY3gPE1Sw9wxQ4905V7Sc3q-sGE8iDs5KJfm3qUZuvFZiEeS3B/exec";
+
+fetch(API_URL)
+.then(response => response.json())
+.then(data => {
+
+    const tbody =
+      document.querySelector("#historyTable tbody");
+
+    data.reverse();
+
+    data.forEach(run => {
+
+        const row =
+          document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${run.Date || ""}</td>
+            <td>${run.Distance || ""}</td>
+            <td>${run.Time || ""}</td>
+            <td>${run.Pace || ""}</td>
+            <td>${run.Shoe || ""}</td>
+            <td>${run.Type || ""}</td>
+            <td>${run.Weight || ""}</td>
+        `;
+
+        tbody.appendChild(row);
+
+    });
+
+});
+</script>
+
+</body>
+</html>
