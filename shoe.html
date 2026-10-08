@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Shoe Mileage</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="navbar">
+        <a href="logrun.html">Log Run</a>
+        <a href="history.html">History</a>
+        <a href="shoe.html">Shoes</a>
+        <a href="graph.html">Analytics</a>
+    </div>
+
+    <h1>👟 Shoe Tracker</h1>
+
+    <p class="subtitle">
+        Track mileage on each pair
+    </p>
+
+    <div id="shoeContainer">
+
+        <div class="stat-card">
+            Loading shoes...
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycby_lVG_c0re8dsFtHyY3gPE1Sw9wxQ4905V7Sc3q-sGE8iDs5KJfm3qUZuvFZiEeS3B/exec";
+
+fetch(API_URL)
+.then(response => response.json())
+.then(data => {
+
+    const shoeMiles = {};
+
+    data.forEach(run => {
+
+        const shoe =
+            run.Shoe || run.shoe || "Unknown";
+
+        const distance =
+            Number(run.Distance || run.distance || 0);
+
+        if (!shoeMiles[shoe]) {
+            shoeMiles[shoe] = 0;
+        }
+
+        shoeMiles[shoe] += distance;
+
+    });
+
+    const container =
+        document.getElementById("shoeContainer");
+
+    container.innerHTML = "";
+
+    Object.entries(shoeMiles)
+        .sort((a,b) => b[1] - a[1])
+        .forEach(([shoe,miles]) => {
+
+            const card =
+                document.createElement("div");
+
+            card.className = "stat-card";
+
+            card.style.marginBottom = "15px";
+
+            card.innerHTML = `
+                <div class="stat-value">
+                    ${miles.toFixed(1)}
+                </div>
+
+                <div class="stat-label">
+                    ${shoe}
+                </div>
+            `;
+
+            container.appendChild(card);
+
+        });
+
+});
+
+</script>
+
+</body>
+</html>
