@@ -89,10 +89,7 @@ Track mileage, shoes, weight, and PRs
 const scriptURL =
 "https://script.google.com/macros/s/AKfycby_lVG_c0re8dsFtHyY3gPE1Sw9wxQ4905V7Sc3q-sGE8iDs5KJfm3qUZuvFZiEeS3B/exec";
 document
-.getElementById("runForm")
-.addEventListener("submit", async (e)=>{
 
-e.preventDefault();
 
 const timeInput = document.getElementById("time");
 
@@ -114,6 +111,12 @@ timeInput.addEventListener("input", function() {
     this.value = value;
 
 });
+    
+.getElementById("runForm")
+.addEventListener("submit", async (e)=>{
+
+e.preventDefault();
+
 
 const distance =
 parseFloat(
