@@ -156,3 +156,9 @@ tr:hover td {
         margin: 10px 0;
     }
 }
+canvas {
+    background: #2b2b2b;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
