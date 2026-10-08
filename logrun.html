@@ -1,124 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Anthony's Running Log</title>
-
-<style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    background: #121212;
-    color: white;
-    font-family: "Segoe UI", sans-serif;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 30px;
-}
-
-.container {
-    width: 100%;
-    max-width: 650px;
-    background: #1e1e1e;
-    padding: 35px;
-    border-radius: 20px;
-    box-shadow: 0 10px 35px rgba(0,0,0,.5);
-}
-
-h1 {
-    text-align: center;
-    color: #fc5200;
-    margin-bottom: 10px;
-}
-
-.subtitle {
-    text-align: center;
-    color: #aaaaaa;
-    margin-bottom: 30px;
-}
-
-label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 600;
-}
-
-input,
-select,
-textarea {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 10px;
-    background: #2b2b2b;
-    color: white;
-    margin-bottom: 18px;
-    font-size: 15px;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    outline: 2px solid #fc5200;
-}
-
-textarea {
-    min-height: 100px;
-    resize: vertical;
-}
-
-button {
-    width: 100%;
-    background: #fc5200;
-    color: white;
-    border: none;
-    padding: 14px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: .2s;
-}
-
-button:hover {
-    background: #ff6e2b;
-}
-
-.stats {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 30px;
-}
-
-.stat-card {
-    flex: 1;
-    background: #2b2b2b;
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-}
-
-.stat-value {
-    font-size: 22px;
-    font-weight: bold;
-    color: #fc5200;
-}
-
-.stat-label {
-    font-size: 12px;
-    color: #aaa;
-}
-</style>
-
+    <title>Anthony's Running Log</title>
+    styles.css
+    
 </head>
 
 <body>
+
+<div class="container">
+
+<div class="navbar">
+    <a href="logrun.html" class="activef="history.html">📖 Historyoes.html👟 Shoes</a>
+    <aalytics.html📈 Analytics</a>
+</div>
+
+<h1>🏃 Anthony's Running Log</h1>
+
+<p class="subtitle">
+Track mileage, shoes, weight, and PRs
+</p>
+
+<div class="stats">
+
+    <div class="stat-card">
+        <div class="stat-value" id="runCount">0</div>
+        <div class="stat-label">Runs</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-value" id="mileCount">0.0</div>
+        <div class="stat-label">Miles</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-value" id="currentWeight">--</div>
+        <div class="stat-label">Weight</div>
+    </div>
+
+</div>
 
 <div class="container">
 
