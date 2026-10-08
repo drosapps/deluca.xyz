@@ -76,12 +76,22 @@ tr:hover td{
 const API_URL =
 "https://script.google.com/macros/s/AKfycby_lVG_c0re8dsFtHyY3gPE1Sw9wxQ4905V7Sc3q-sGE8iDs5KJfm3qUZuvFZiEeS3B/exec";
 
+const tbody =
+  document.querySelector("#historyTable tbody");
+
+tbody.innerHTML = `
+<tr>
+  <td colspan="7" style="text-align:center;">
+    Loading runs...
+  </td>
+</tr>
+`;
+
 fetch(API_URL)
 .then(response => response.json())
 .then(data => {
 
-    const tbody =
-      document.querySelector("#historyTable tbody");
+    tbody.innerHTML = "";
 
     data.reverse();
 
